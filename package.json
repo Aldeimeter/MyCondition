@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts"
+    "test": "jest --runInBand",
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "Artem Zaitsev",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@types/express-validator": "^2.20.33",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
@@ -24,13 +24,21 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.7",
+    "@jest/globals": "^29.7.0",
     "@types/cors": "^2.8.17",
+    "@types/jest": "^29.5.14",
+    "@types/express-validator": "^2.20.33",
     "@types/express": "^5.0.0",
+    "@types/supertest": "^6.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.0",
     "biome": "^0.3.3",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
     "typescript": "^5.6.3"
   }
 }
