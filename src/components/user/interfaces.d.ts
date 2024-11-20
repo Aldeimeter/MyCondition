@@ -9,3 +9,8 @@ export interface AuthRequest extends Request {
 export interface AuthJwtPayload extends JwtPayload {
   id: string;
 }
+
+export enum roles {
+  Admin = "admin",
+  User = "user",
+}

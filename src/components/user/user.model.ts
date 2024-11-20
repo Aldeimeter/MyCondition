@@ -12,6 +12,8 @@ import crypto from "node:crypto";
 import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 import Token from "./token.model";
+import Weight from "@components/measures/weight/weight.model";
+import { roles } from "./interfaces";
 
 @Entity({ schema: "public" })
 export default class User extends BaseEntity {
@@ -36,6 +38,13 @@ export default class User extends BaseEntity {
     }
   }
 
+  @Column({
+    type: "enum",
+    enum: roles,
+    default: roles.User,
+  })
+  role!: roles;
+
   @Column({ type: "date" })
   dateOfBirth!: string;
 
@@ -44,6 +53,9 @@ export default class User extends BaseEntity {
 
   @OneToMany(() => Token, (token) => token.user, { cascade: true })
   tokens!: Token[];
+
+  @OneToMany(() => Weight, (weight) => weight.user, { cascade: true })
+  weights!: Weight[];
 
   constructor(init?: Partial<User>) {
     super();
@@ -56,6 +68,23 @@ export default class User extends BaseEntity {
     const { password, id, tokens, ...userData } = this;
     return userData;
   }
+
+  toCSV() {
+    const { email, password, username, dateOfBirth } = this;
+    return `${email},${username},${password},${dateOfBirth}`;
+  }
+  static fromCSV(line: string) {
+    const defaultHeight = 175;
+    const [email, password, username, dateOfBirth] = line.split(",");
+    return new this({
+      email,
+      password,
+      username,
+      dateOfBirth,
+      height: defaultHeight,
+    });
+  }
+
   static async findByCredentials(email: string, password: string) {
     const user = await this.findOne({
       where: {
