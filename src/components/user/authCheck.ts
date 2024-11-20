@@ -28,6 +28,7 @@ export const requireAuthentication = async (
 
     req.userId = decoded.id;
     req.token = aToken;
+    req.role = decoded.role;
     next();
   } catch (err) {
     console.error(err);

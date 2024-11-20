@@ -2,7 +2,7 @@ import { CustomError } from "@config/errors";
 import User from "../user.model";
 import type { Request, Response, NextFunction } from "express";
 import type { AuthRequest } from "../interfaces";
-import { roles } from "../interfaces";
+import { ROLES } from "../constants";
 export const fetchUserProfile = async (
   req: Request,
   res: Response,
@@ -61,11 +61,11 @@ export const exportToCSV = async (
         `User with id ${userId} not found`,
       );
     }
-    if (user.role !== roles.Admin) {
+    if (req.role !== ROLES.Admin) {
       throw new CustomError("User is not an admin", 401);
     }
 
-    const users = await User.findBy({ role: roles.User });
+    const users = await User.findBy({ role: ROLES.User });
 
     const csvHeader = "email,username,password,dateOfBirth\n";
     const csvLines = [];
@@ -94,7 +94,7 @@ export const importFromCSV = async (
         `User with id ${userId} not found`,
       );
     }
-    if (user.role !== roles.Admin) {
+    if (req.role !== ROLES.Admin) {
       throw new CustomError("User is not an admin", 401);
     }
 

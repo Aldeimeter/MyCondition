@@ -18,3 +18,8 @@ export const ACCESS_TOKEN = {
   secret: process.env.AUTH_ACCESS_TOKEN_SECRET as string,
   expiry: process.env.AUTH_ACCESS_TOKEN_EXPIRY as string,
 };
+
+export enum ROLES {
+  Admin = "admin",
+  User = "user",
+}

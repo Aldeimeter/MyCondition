@@ -13,7 +13,7 @@ import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 import Token from "./token.model";
 import Weight from "@components/measures/weight/weight.model";
-import { roles } from "./interfaces";
+import { ROLES } from "./constants";
 
 @Entity({ schema: "public" })
 export default class User extends BaseEntity {
@@ -40,10 +40,10 @@ export default class User extends BaseEntity {
 
   @Column({
     type: "enum",
-    enum: roles,
-    default: roles.User,
+    enum: ROLES,
+    default: ROLES.User,
   })
-  role!: roles;
+  role!: ROLES;
 
   @Column({ type: "date" })
   dateOfBirth!: string;
@@ -115,6 +115,7 @@ export default class User extends BaseEntity {
         id: this.id.toString(),
         username: this.username,
         email: this.email,
+        role: this.role,
       },
       ACCESS_TOKEN.secret,
       {
