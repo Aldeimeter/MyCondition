@@ -23,22 +23,23 @@
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",
-    "@jest/globals": "^29.7.0",
     "@types/cors": "^2.8.17",
-    "@types/jest": "^29.5.14",
-    "@types/express-validator": "^2.20.33",
     "@types/express": "^5.0.0",
-    "@types/supertest": "^6.0.2",
+    "@types/express-validator": "^2.20.33",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.0",
+    "@types/supertest": "^6.0.2",
     "biome": "^0.3.3",
+    "http-proxy-middleware": "^3.0.3",
     "nodemon": "^3.1.7",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
   }
 }
