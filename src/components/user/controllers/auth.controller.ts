@@ -24,7 +24,6 @@ export const login = async (
       refreshToken,
       REFRESH_TOKEN.cookie.options,
     );
-    console.log("Logged in");
     res.json({ success: true, user, accessToken });
   } catch (error) {
     next(error);
@@ -37,13 +36,13 @@ export const signup = async (
   next: NextFunction,
 ) => {
   try {
-    const { username, email, password, dateOfBirth, height } = req.body;
-
+    const { username, email, password, age, height } = req.body;
+    console.log("I am trying to login");
     const newUser = new User({
       username,
       email,
       password,
-      dateOfBirth,
+      age,
       height,
     });
     await newUser.save();

@@ -6,13 +6,11 @@ import AppDataSource from "@config/db";
 import UserModel from "@components/user/user.model";
 
 describe("user API Tests", () => {
-  const date = new Date();
-  const formattedDate = date.toISOString().split("T")[0].replace(/-/g, " ");
   const testUser = {
     username: "John",
     email: "john.doe@example.com",
     password: "john.doe.pass",
-    dateOfBirth: formattedDate,
+    age: 20,
     height: 12.2,
   };
   describe("GET /api/users/me", () => {
@@ -43,7 +41,6 @@ describe("user API Tests", () => {
       const response = await request(app)
         .get("/api/users/me")
         .set("Authorization", `Bearer ${accessToken}`);
-
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
     });
@@ -80,7 +77,7 @@ describe("user API Tests", () => {
       username: "Jane",
       email: "jane.doe@example.com",
       password: "jane.doe.pass",
-      dateOfBirth: formattedDate,
+      age: 20,
       height: 12.2,
     };
     beforeAll(async () => {

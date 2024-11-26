@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 const { validationResult } = require("express-validator");
 
 export default (req: Request, res: Response, next: NextFunction) => {
+  console.log("I am trying to validate");
   const errors = validationResult(req);
 
   if (errors.isEmpty()) {

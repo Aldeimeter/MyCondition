@@ -6,13 +6,11 @@ import AppDataSource from "@config/db";
 import UserModel from "@components/user/user.model";
 
 describe("Auth API Tests", () => {
-  const date = new Date();
-  const formattedDate = date.toISOString().split("T")[0].replace(/-/g, " ");
   const testUser = {
     username: "John",
     email: "john.doe@example.com",
     password: "john.doe.pass",
-    dateOfBirth: formattedDate,
+    age: 20,
     height: 12.2,
   };
   describe("POST /api/users/login", () => {

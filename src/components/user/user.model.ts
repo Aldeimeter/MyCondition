@@ -45,8 +45,8 @@ export default class User extends BaseEntity {
   })
   role!: ROLES;
 
-  @Column({ type: "date" })
-  dateOfBirth!: string;
+  @Column({ type: "int8" })
+  age!: number;
 
   @Column({ type: "float" })
   height!: number;
@@ -70,17 +70,18 @@ export default class User extends BaseEntity {
   }
 
   toCSV() {
-    const { email, password, username, dateOfBirth } = this;
-    return `${email},${username},${password},${dateOfBirth}`;
+    const { email, password, username, age } = this;
+    return `${email},${username},${password},${age}`;
   }
+
   static fromCSV(line: string) {
     const defaultHeight = 175;
-    const [email, password, username, dateOfBirth] = line.split(",");
+    const [email, password, username, age] = line.split(",");
     return new this({
       email,
       password,
       username,
-      dateOfBirth,
+      age: Number(age),
       height: defaultHeight,
     });
   }

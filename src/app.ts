@@ -19,6 +19,7 @@ export const createApp = async () => {
 
   // Determine environment
   const isDev = process.env.NODE_ENV === "development";
+  const isTest = process.env.NODE_ENV === "test";
 
   if (isDev) {
     // In development, proxy requests to the React dev server
@@ -28,11 +29,11 @@ export const createApp = async () => {
     app.use(
       "/",
       createProxyMiddleware({
-        target: "http://localhost:5173", // React dev server
+        target: "http://localhost:3000", // React dev server
         changeOrigin: true,
       }),
     );
-  } else {
+  } else if (!isTest) {
     // In production, serve React static files
     const reactBuildPath = path.join(__dirname, "../frontend/dist");
     app.use(express.static(reactBuildPath));
@@ -55,9 +56,9 @@ export const createApp = async () => {
   app.use("/api", Config.routes);
   //App error handling
   //
-  app.all("*", (_req, _res, next) => {
-    next();
-  });
+  //app.all("*", (_req, _res, next) => {
+  //  next();
+  //});
 
   app.use(LostErrorHandler); // 404 error handler middleware
   app.use(AppErrorHandler); // General app error handler

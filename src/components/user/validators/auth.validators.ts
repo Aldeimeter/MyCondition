@@ -37,10 +37,7 @@ export const signUpValidator = [
         throw new Error("500");
       }
     }),
-  body("dateOfBirth")
-    .trim()
-    .notEmpty()
-    .withMessage("Date of birth is required"),
+  body("age").trim().notEmpty().withMessage("Age is required"),
   body("height").trim().notEmpty().withMessage("Height is required"),
   body("password")
     .notEmpty()
