@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/shared/api";
 import type { ResponseData } from "@/shared/api";
+import type { Errors, ErrorResponse } from "@/shared/utils/interfaces";
 import { ValidatedInput } from "@/shared/ui";
 import { useAuth } from "@/features/auth/AuthContext";
+import { mapValidationErrors } from "@/shared/utils/validation";
+import { AxiosError } from "axios";
 
-interface ISignUpForm {
+interface SignUpForm {
   email: string;
   username: string;
   password: string;
@@ -14,12 +17,8 @@ interface ISignUpForm {
   age: number;
 }
 
-interface Errors {
-  [key: string]: string;
-}
-
 const SignUp: React.FC = () => {
-  const [formData, setFormData] = useState<ISignUpForm>({
+  const [formData, setFormData] = useState<SignUpForm>({
     email: "",
     username: "",
     password: "",
@@ -43,15 +42,30 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Something is going on");
     try {
       const response = await api.post("/users/signup", formData);
-      console.log(response);
       const { accessToken } = response.data as ResponseData;
       login(accessToken);
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Signup error:", error);
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        const error = e as AxiosError;
+        switch (error.status) {
+          case 422:
+            if (error.response?.data) {
+              const data = error.response.data as ErrorResponse;
+              setErrors(mapValidationErrors(data.validationErrors));
+            }
+            break;
+
+          default:
+            setErrors({ global: "Unexpected error" });
+            console.error("Axios error:", error);
+            break;
+        }
+      } else {
+        console.error("Signup error:", e);
+      }
     }
   };
 
@@ -142,6 +156,11 @@ const SignUp: React.FC = () => {
         >
           Sign up
         </button>
+        {errors.global && (
+          <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">
+            {errors.global}
+          </span>
+        )}
       </form>
     </div>
   );
