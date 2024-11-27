@@ -5,7 +5,6 @@ import { CustomError, AuthorizationError } from "@config/errors";
 import type { CookieOptions, NextFunction, Request, Response } from "express";
 import type { AuthRequest, AuthJwtPayload } from "../interfaces";
 import { REFRESH_TOKEN } from "../constants";
-import Token from "../token.model";
 
 export const login = async (
   req: Request,
