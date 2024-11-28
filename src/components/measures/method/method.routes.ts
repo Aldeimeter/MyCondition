@@ -22,4 +22,11 @@ router.delete(
   methodController.remove,
 );
 
+router.get(
+  "",
+  requireAuthentication,
+  validators.getMethodsValidator,
+  validate,
+  methodController.getPaginated,
+);
 export default router;

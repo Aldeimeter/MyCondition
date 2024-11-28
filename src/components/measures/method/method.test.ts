@@ -6,7 +6,7 @@ import AppDataSource from "@config/db";
 import UserModel from "@components/user/user.model";
 import MethodModel from "@components/measures/method/method.model";
 
-describe("user API Tests", () => {
+describe("Method API Tests", () => {
   const testUser = {
     username: "John",
     email: "john.doe@example.com",

@@ -34,6 +34,7 @@ export const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
     try {
       const response = await api.post("/users/login", formData);
       const { accessToken } = response.data as ResponseData;

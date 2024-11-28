@@ -42,6 +42,7 @@ export const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
     try {
       const response = await api.post("/users/signup", formData);
       const { accessToken } = response.data as ResponseData;

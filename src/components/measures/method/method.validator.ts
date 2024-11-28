@@ -1,4 +1,4 @@
-const { param, body } = require("express-validator");
+const { param, body, query } = require("express-validator");
 
 export const removeMethodValidator = [
   param("methodId")
@@ -19,4 +19,16 @@ export const createMethodValidator = [
     .matches(/^[a-zA-Z0-9-\s]{8,48}$/)
     .withMessage("Name should be between 8 and 48 characters"),
   body("description").trim().notEmpty().withMessage("Description is required"),
+];
+export const getMethodsValidator = [
+  query("page")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Page must be an integer greater that or equal to 1")
+    .toInt(),
+  query("Limit")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Limit must be an integer greater that or equal to 1")
+    .toInt(),
 ];

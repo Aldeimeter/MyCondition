@@ -35,3 +35,28 @@ export const remove = async (
     next(error);
   }
 };
+
+export const getPaginated = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
+    const skip = (page - 1) * limit;
+
+    const [methods, total] = await Promise.all([
+      Method.find({ skip, take: limit }), // Fetch methods
+      Method.count(), // Count total methods
+    ]);
+
+    res.status(200).json({
+      success: true,
+      methods,
+      totalPages: Math.ceil(total / limit), // Calculate total pages
+    });
+  } catch (error) {
+    next(error); // Pass error to the error handling middleware
+  }
+};
