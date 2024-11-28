@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "@/shared/api";
 import type { ResponseData } from "@/shared/api";
 import { useAuth } from "@/features/auth";
-import { ErrorResponse, Errors } from "@/shared/utils";
+import { ErrorResponse, Errors, ValidationErrorResponse } from "@/shared/utils";
 import { AxiosError } from "axios";
 import { mapValidationErrors } from "@/shared/utils";
 import { ValidatedInput } from "@/widgets";
@@ -46,11 +46,16 @@ export const Login: React.FC = () => {
         switch (error.status) {
           case 422:
             if (error.response?.data) {
-              const data = error.response.data as ErrorResponse;
+              const data = error.response.data as ValidationErrorResponse;
               setErrors(mapValidationErrors(data.validationErrors));
             }
             break;
-
+          case 400:
+            if (error.response?.data) {
+              const data = error.response.data as ErrorResponse;
+              setErrors({ ...errors, global: data.feedback });
+            }
+            break;
           default:
             setErrors({ global: "Unexpected error" });
             console.error("Axios error:", error);
@@ -97,7 +102,7 @@ export const Login: React.FC = () => {
           Login
         </button>
         {errors.global && (
-          <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">
+          <span className="mx-auto my-0.5 text-sm font-medium text-red-500">
             {errors.global}
           </span>
         )}

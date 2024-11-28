@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/shared/api";
 import type { ResponseData } from "@/shared/api";
-import type { Errors, ErrorResponse } from "@/shared/utils";
+import type {
+  Errors,
+  ErrorResponse,
+  ValidationErrorResponse,
+} from "@/shared/utils";
 import { ValidatedInput } from "@/widgets";
 import { useAuth } from "@/features/auth";
 import { mapValidationErrors } from "@/shared/utils";
@@ -54,7 +58,7 @@ export const SignUp: React.FC = () => {
         switch (error.status) {
           case 422:
             if (error.response?.data) {
-              const data = error.response.data as ErrorResponse;
+              const data = error.response.data as ValidationErrorResponse;
               setErrors(mapValidationErrors(data.validationErrors));
             }
             break;
@@ -158,7 +162,7 @@ export const SignUp: React.FC = () => {
           Sign up
         </button>
         {errors.global && (
-          <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">
+          <span className="mx-auto my-0.5 text-sm font-medium text-red-500">
             {errors.global}
           </span>
         )}

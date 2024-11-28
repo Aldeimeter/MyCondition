@@ -1,5 +1,10 @@
 import { api } from "@/shared/api";
-import { ErrorResponse, Errors, mapValidationErrors } from "@/shared/utils";
+import {
+  ErrorResponse,
+  Errors,
+  mapValidationErrors,
+  ValidationErrorResponse,
+} from "@/shared/utils";
 import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { ValidatedInput } from "..";
@@ -46,7 +51,7 @@ export const CreateMethodForm = ({ triggerRefresh }: FormProps) => {
         switch (error.status) {
           case 422:
             if (error.response?.data) {
-              const data = error.response.data as ErrorResponse;
+              const data = error.response.data as ValidationErrorResponse;
               setErrors(mapValidationErrors(data.validationErrors));
             }
             break;

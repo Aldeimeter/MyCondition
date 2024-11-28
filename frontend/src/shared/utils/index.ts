@@ -1,2 +1,7 @@
-export type { ValidationError, Errors, ErrorResponse } from "./interfaces";
+export type {
+  ValidationError,
+  Errors,
+  ErrorResponse,
+  ValidationErrorResponse,
+} from "./interfaces";
 export { mapValidationErrors } from "./validation";

@@ -33,7 +33,7 @@ export const LogoutBtn = () => {
         Logout
       </button>
       {errors.global && (
-        <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">
+        <span className="mx-auto my-0.5 text-sm font-medium text-red-500">
           {errors.global}
         </span>
       )}
