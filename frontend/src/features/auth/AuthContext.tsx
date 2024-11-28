@@ -1,8 +1,12 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { setAuthToken, removeAuthToken } from "@/shared/api/axios";
+import api, { setAuthToken, removeAuthToken } from "@/shared/api/axios";
+import { User } from "@/entities/user";
+import { AxiosError } from "axios";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: User;
+  isLoading: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -12,14 +16,43 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<User>({
+    email: "",
+    username: "",
+    role: "user",
+  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Running auth provider useEffect");
     const token = localStorage.getItem("accessToken");
     if (token) {
-      setIsAuthenticated(true);
       setAuthToken(token);
+      setIsAuthenticated(true);
+      api
+        .get("/users/me")
+        .then((response) => {
+          setUser(response.data.user);
+        })
+        .catch((e: unknown) => {
+          if (e instanceof AxiosError) {
+            const error = e as AxiosError;
+            switch (error.status) {
+              case 401:
+                logout();
+                break;
+
+              default:
+                console.error(error.cause);
+                break;
+            }
+          } else {
+            console.error(e);
+          }
+        });
     }
+    setIsLoading(false);
   }, []);
 
   const login = (token: string) => {
@@ -35,7 +68,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, isLoading, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

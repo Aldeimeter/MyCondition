@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/AuthContext";
 
-const Dashboard: React.FC = () => {
+export const Dashboard: React.FC = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -19,5 +19,3 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
-export default Dashboard;

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/shared/api";
 import type { ResponseData } from "@/shared/api";
-import type { Errors, ErrorResponse } from "@/shared/utils/interfaces";
-import { ValidatedInput } from "@/shared/ui";
-import { useAuth } from "@/features/auth/AuthContext";
-import { mapValidationErrors } from "@/shared/utils/validation";
+import type { Errors, ErrorResponse } from "@/shared/utils";
+import { ValidatedInput } from "@/widgets";
+import { useAuth } from "@/features/auth";
+import { mapValidationErrors } from "@/shared/utils";
 import { AxiosError } from "axios";
 
 interface SignUpForm {
@@ -17,7 +17,7 @@ interface SignUpForm {
   age: number;
 }
 
-const SignUp: React.FC = () => {
+export const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<SignUpForm>({
     email: "",
     username: "",
@@ -70,7 +70,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-3">
+    <div className="max-w-sm mx-auto mt-3 shadow-md rounded-xl bg-gray-100">
       <h2 className="text-center text-3xl font-extralight">Sign Up</h2>
       <form onSubmit={handleSubmit} className="flex flex-col">
         <ValidatedInput
@@ -165,5 +165,3 @@ const SignUp: React.FC = () => {
     </div>
   );
 };
-
-export default SignUp;

@@ -6,7 +6,7 @@ type Props = {
   inputProps: React.InputHTMLAttributes<HTMLInputElement>;
 };
 
-const ValidatedInput = ({ error, label, inputProps }: Props) => {
+export const ValidatedInput = ({ error, label, inputProps }: Props) => {
   return (
     <div className="mb-2 flex flex-col w-full">
       {label && (
@@ -29,5 +29,3 @@ const ValidatedInput = ({ error, label, inputProps }: Props) => {
     </div>
   );
 };
-
-export default ValidatedInput;

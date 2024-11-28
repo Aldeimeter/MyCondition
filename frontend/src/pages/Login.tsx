@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/shared/api";
 import type { ResponseData } from "@/shared/api";
-import { useAuth } from "@/features/auth/AuthContext";
-import { ErrorResponse, Errors } from "@/shared/utils/interfaces";
+import { useAuth } from "@/features/auth";
+import { ErrorResponse, Errors } from "@/shared/utils";
 import { AxiosError } from "axios";
-import { mapValidationErrors } from "@/shared/utils/validation";
-import { ValidatedInput } from "@/shared/ui";
+import { mapValidationErrors } from "@/shared/utils";
+import { ValidatedInput } from "@/widgets";
 
 interface LoginForm {
   email: string;
   password: string;
 }
 
-const Login: React.FC = () => {
+export const Login: React.FC = () => {
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
     password: "",
@@ -104,5 +104,3 @@ const Login: React.FC = () => {
     </div>
   );
 };
-
-export default Login;

@@ -29,10 +29,10 @@ api.interceptors.response.use(
       try {
         const refreshToken = document.cookie
           .split("; ")
-          .find((row) => row.startsWith("refreshToken="))
+          .find((row) => row.startsWith("refresh_token="))
           ?.split("=")[1];
 
-        const response = await axios.post(`${baseURL}/reauth`, {
+        const response = await axios.post(`${baseURL}/users/reauth`, {
           refreshToken,
         });
         const { accessToken } = response.data as ResponseData;
@@ -44,6 +44,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         // Handle refresh token error (e.g., logout user)
+        localStorage.removeItem("accessToken");
         return Promise.reject(refreshError);
       }
     }
