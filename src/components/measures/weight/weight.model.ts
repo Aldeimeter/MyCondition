@@ -19,7 +19,8 @@ export default class Weight extends BaseEntity {
   @Column({ type: "float" })
   value!: number;
 
-  @ManyToOne(() => Method, (method) => method.id)
+  @ManyToOne(() => Method, { onDelete: "SET NULL" })
+  @Column({ type: "uuid", nullable: true })
   method?: string;
 
   @ManyToOne(() => User, { nullable: false, onDelete: "CASCADE" })
