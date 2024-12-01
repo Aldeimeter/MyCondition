@@ -29,4 +29,12 @@ router.get(
   validate,
   methodController.getPaginated,
 );
+
+router.get(
+  "/search",
+  requireAuthentication,
+  validators.getMethodByQueryValidator,
+  validate,
+  methodController.getByQuery,
+);
 export default router;

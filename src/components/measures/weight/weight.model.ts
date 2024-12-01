@@ -7,6 +7,7 @@ import {
 } from "typeorm";
 import Method from "../method/method.model";
 import User from "@components/user/user.model";
+
 @Entity({ schema: "public" })
 export default class Weight extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -21,8 +22,10 @@ export default class Weight extends BaseEntity {
   @ManyToOne(() => Method, (method) => method.id)
   method?: string;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, { nullable: false, onDelete: "CASCADE" })
+  @Column({ type: "uuid" })
   user!: string;
+
   constructor(init?: Partial<Weight>) {
     super();
     if (init) {

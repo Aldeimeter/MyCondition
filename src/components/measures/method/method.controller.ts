@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import Method from "./method.model";
 import { CustomError } from "@config/errors";
+import { ILike } from "typeorm";
 export const create = async (
   req: Request,
   res: Response,
@@ -47,16 +48,39 @@ export const getPaginated = async (
     const skip = (page - 1) * limit;
 
     const [methods, total] = await Promise.all([
-      Method.find({ skip, take: limit }), // Fetch methods
-      Method.count(), // Count total methods
+      Method.find({ skip, take: limit }),
+      Method.count(),
     ]);
 
     res.status(200).json({
       success: true,
       methods,
-      totalPages: Math.ceil(total / limit), // Calculate total pages
+      totalPages: Math.ceil(total / limit),
     });
   } catch (error) {
-    next(error); // Pass error to the error handling middleware
+    next(error);
+  }
+};
+
+export const getByQuery = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { q: query } = req.query;
+
+    const methods = await Method.find({
+      where: {
+        name: ILike(`%${query}%`),
+      },
+      select: ["id", "name"],
+    });
+    res.status(200).json({
+      success: true,
+      methods,
+    });
+  } catch (error) {
+    next(error);
   }
 };

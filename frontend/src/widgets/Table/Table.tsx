@@ -8,7 +8,7 @@ export interface TableData {
 interface TableProps<T extends TableData> {
   data: T[];
   columns: { key: keyof T; label: string }[];
-  onClickAction: (itemId: string) => {};
+  onClickAction: (itemId: string) => void;
 }
 
 export const Table = <T extends TableData>({

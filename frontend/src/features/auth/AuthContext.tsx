@@ -25,7 +25,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Running auth provider useEffect");
     const token = localStorage.getItem("accessToken");
     if (token) {
       setAuthToken(token);

@@ -13,7 +13,7 @@ export const create = async (
     const weight = new Weight({
       date,
       value,
-      method: methodId,
+      method: methodId || null,
       user: req.userId,
     });
     await weight.save();
@@ -23,6 +23,7 @@ export const create = async (
     next(error);
   }
 };
+
 export const remove = async (
   req: AuthRequest,
   res: Response,
@@ -30,10 +31,12 @@ export const remove = async (
 ) => {
   try {
     const { weightId } = req.params;
+
     const weightToRemove = await Weight.findOneBy({
       id: weightId,
       user: req.userId,
     });
+
     if (!weightToRemove) {
       throw new CustomError(
         "Weight measure not found",
@@ -49,38 +52,60 @@ export const remove = async (
   }
 };
 
-export const getAllWithQuery = async (
+export const getPaginatedWithQuery = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const { from, to, methodId } = req.query;
+    const userId = req.userId;
+    const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
+    const skip = (page - 1) * limit;
 
-    // Base query with user filter
-    const query = Weight.createQueryBuilder("weight").where(
-      "weight.user = :user",
-      {
-        user: req.userId,
-      },
-    );
+    const { dateFrom, dateTo, methodId } = req.query;
 
-    // Add optional filters if provided
-    if (from) {
-      query.andWhere("weight.date >= :from", { from });
+    const queryBuilder = Weight.createQueryBuilder("weight")
+      .leftJoinAndSelect("weight.method", "method") // Join the method table
+      .addSelect("method.name", "methodName")
+      .where("weight.user = :userId", { userId }) // Filter by the current user's ID
+      .skip(skip)
+      .take(limit);
+    if (dateFrom) {
+      queryBuilder.andWhere("weight.date >= :dateFrom", {
+        dateFrom: dateFrom as string,
+      });
     }
 
-    if (to) {
-      query.andWhere("weight.date <= :to", { to });
+    if (dateTo) {
+      queryBuilder.andWhere("weight.date <= :dateTo", {
+        dateTo: dateTo as string,
+      });
     }
 
-    if (methodId) {
-      query.andWhere("weight.methodId = :methodId", { methodId });
+    if (methodId === "null") {
+      queryBuilder.andWhere("weight.methodId IS NULL");
+    } else if (methodId) {
+      queryBuilder.andWhere("weight.methodId = :methodId", {
+        methodId: methodId as string,
+      });
     }
 
-    const weightsToReturn = await query.getMany();
+    const [weights, total] = await Promise.all([
+      queryBuilder.getRawAndEntities(),
+      queryBuilder.getCount(),
+    ]);
 
-    res.status(200).json({ success: true, measures: weightsToReturn });
+    const measures = weights.entities.map((weight, index) => ({
+      ...weight,
+      method: weights.raw[index].methodName || null,
+    }));
+
+    res.status(200).json({
+      success: true,
+      measures: measures,
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (error) {
     next(error);
   }

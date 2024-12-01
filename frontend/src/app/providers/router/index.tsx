@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { SignUp, Login, Dashboard, Methods } from "@/pages";
+import { SignUp, Login, Dashboard, Methods, Measures } from "@/pages";
 import { PrivateRoute } from "@/features/auth";
 import { Layout } from "@/app/Layout";
 
@@ -19,7 +19,7 @@ const AppRouter = () => {
       >
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="methods" element={<Methods />} />
-        <Route path="measures" element={<Dashboard />} />
+        <Route path="measures" element={<Measures />} />
         <Route path="users" element={<Dashboard />} />
       </Route>
 

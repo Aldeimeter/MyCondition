@@ -32,3 +32,6 @@ export const getMethodsValidator = [
     .withMessage("Limit must be an integer greater that or equal to 1")
     .toInt(),
 ];
+export const getMethodByQueryValidator = [
+  query("q").trim().notEmpty().withMessage("Query is required"),
+];
