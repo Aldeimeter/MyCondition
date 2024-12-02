@@ -8,8 +8,15 @@ export const loginValidator = [
     .notEmpty()
     .withMessage("Email is required")
     .bail()
-    .isEmail()
-    .withMessage("Email is invalid"),
+    .custom((value: string) => {
+      if (value === "admin") {
+        return true; // Allow "admin" as a valid email
+      }
+      if (!/\S+@\S+\.\S+/.test(value)) {
+        throw new Error("Email is invalid");
+      }
+      return true;
+    }),
   body("password").notEmpty().withMessage("Password is required"),
 ];
 

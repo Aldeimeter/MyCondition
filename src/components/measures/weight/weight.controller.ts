@@ -44,7 +44,7 @@ export const remove = async (
         "Weight measure does not exist",
       );
     }
-    weightToRemove.remove();
+    await weightToRemove.remove();
 
     res.status(200).json({ success: true });
   } catch (error) {

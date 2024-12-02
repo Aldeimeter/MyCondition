@@ -36,7 +36,6 @@ export const signup = async (
 ) => {
   try {
     const { username, email, password, age, height } = req.body;
-    console.log("I am trying to login");
     const newUser = new User({
       username,
       email,

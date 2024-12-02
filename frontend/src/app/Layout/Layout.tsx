@@ -1,4 +1,4 @@
-import { Footer, Header } from "@/widgets";
+import { Advertisement, Footer, Header } from "@/widgets";
 import React from "react";
 import { Outlet } from "react-router-dom";
 
@@ -11,6 +11,7 @@ export const Layout: React.FC = () => {
         <Outlet />
       </main>
       <Footer />
+      <Advertisement />
     </div>
   );
 };

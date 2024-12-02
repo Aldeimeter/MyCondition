@@ -26,7 +26,7 @@ export const createValidator = [
 ];
 
 export const removeValidator = [
-  param("weightId")
+  param("upperPreasureId")
     .notEmpty()
     .withMessage("Weight id is missing")
     .bail()

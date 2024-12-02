@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   "",
   requireAuthentication,
-  validators.createWeightValidator,
+  validators.createValidator,
   validate,
   weightController.create,
 );
@@ -17,7 +17,7 @@ router.post(
 router.delete(
   "/:weightId",
   requireAuthentication,
-  validators.removeWeightValidator,
+  validators.removeValidator,
   validate,
   weightController.remove,
 );

@@ -80,7 +80,7 @@ export const LinearRegression = ({ measures }: LinearRegressionProps) => {
     ),
     datasets: [
       {
-        label: "Weight Measurements",
+        label: "Measurements",
         data: sortedMeasures.map((measure) => parseFloat(measure.value)),
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",

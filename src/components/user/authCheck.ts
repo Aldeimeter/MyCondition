@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { AuthorizationError } from "@config/errors";
 import type { NextFunction, Response } from "express";
 import type { AuthRequest, AuthJwtPayload } from "./interfaces";
-import { ACCESS_TOKEN } from "./constants";
+import { ACCESS_TOKEN, ROLES } from "./constants";
 
 export const requireAuthentication = async (
   req: AuthRequest,
@@ -50,5 +50,27 @@ export const requireAuthentication = async (
     }
 
     next(err);
+  }
+};
+export const requireAdmin = (
+  req: AuthRequest,
+  _res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (req.role !== ROLES.Admin) {
+      throw new AuthorizationError(
+        "Authorization Error",
+        undefined,
+        "You do not have the required permissions!",
+        {
+          error: "insufficient_permissions",
+          error_description: "User is not an Admin",
+        },
+      );
+    }
+    next(); // Proceed if user is Admin
+  } catch (err) {
+    next(err); // Pass error to the next middleware
   }
 };

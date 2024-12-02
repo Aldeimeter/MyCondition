@@ -65,24 +65,23 @@ export default class User extends BaseEntity {
   }
 
   toJSON() {
-    const { password, id, tokens, ...userData } = this;
+    const { password, tokens, ...userData } = this;
     return userData;
   }
 
   toCSV() {
-    const { email, password, username, age } = this;
-    return `${email},${username},${password},${age}`;
+    const { email, password, username, age, height } = this;
+    return `${email},${username},${password},${age},${height}`;
   }
 
   static fromCSV(line: string) {
-    const defaultHeight = 175;
-    const [email, password, username, age] = line.split(",");
+    const [email, password, username, age, height] = line.split(",");
     return new this({
       email,
       password,
       username,
       age: Number(age),
-      height: defaultHeight,
+      height: Number(height),
     });
   }
 

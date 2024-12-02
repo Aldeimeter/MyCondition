@@ -1,3 +1,4 @@
+import { IAdvertisement } from "@/entities/ad";
 import { api } from "@/shared/api";
 import {
   Errors,
@@ -8,17 +9,13 @@ import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { ValidatedInput } from "..";
 
-interface MethodForm {
-  name: string;
-  description: string;
-}
 interface FormProps {
   triggerRefresh: () => void;
 }
-export const CreateMethodForm = ({ triggerRefresh }: FormProps) => {
-  const [formData, setFormData] = useState<MethodForm>({
-    name: "",
-    description: "",
+export const CreateAdForm = ({ triggerRefresh }: FormProps) => {
+  const [formData, setFormData] = useState<IAdvertisement>({
+    imgUrl: "",
+    targetUrl: "",
   });
   const [errors, setErrors] = useState<Errors>({});
 
@@ -36,11 +33,11 @@ export const CreateMethodForm = ({ triggerRefresh }: FormProps) => {
     e.preventDefault();
     setErrors({});
     try {
-      const response = await api.post("/methods", formData);
+      const response = await api.post("/ad", formData);
       if (response.data.success) {
         setFormData({
-          name: "",
-          description: "",
+          imgUrl: "",
+          targetUrl: "",
         });
         triggerRefresh();
       }
@@ -70,41 +67,34 @@ export const CreateMethodForm = ({ triggerRefresh }: FormProps) => {
       <ValidatedInput
         inputProps={{
           type: "text",
-          id: "name",
-          name: "name",
-          value: formData.name,
+          id: "imgUrl",
+          name: "imgUrl",
+          value: formData.imgUrl,
           onChange: handleChange,
-          placeholder: "Method name",
+          placeholder: "Image url",
+          maxLength: 2048,
         }}
-        label="Name"
-        error={errors.name}
+        label="Image url"
+        error={errors.imgUrl}
       />
-      <div className="mb-2 flex flex-col w-full">
-        <label
-          htmlFor="description"
-          className="ms-1 mb-1 text-sm font-medium text-gray-900"
-        >
-          Description
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          className="bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-52 p-2.5 text-sm text-gray-900 resize-none"
-          maxLength={1024}
-          onChange={handleChange}
-          value={formData.description}
-        />
-        {errors.description && (
-          <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">
-            {errors.description}
-          </span>
-        )}
-      </div>
+      <ValidatedInput
+        inputProps={{
+          type: "text",
+          id: "targetUrl",
+          name: "targetUrl",
+          value: formData.targetUrl,
+          onChange: handleChange,
+          placeholder: "Target url",
+          maxLength: 2048,
+        }}
+        label="Target url"
+        error={errors.targerUrl}
+      />
       <button
         type="submit"
         className="w-3/4 mt-2 mx-auto focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 mb-2"
       >
-        Create
+        Add
       </button>
       {errors.global && (
         <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">

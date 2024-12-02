@@ -12,11 +12,6 @@ export const Header: React.FC = () => {
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <Link to="/dashboard" className="hover:text-gray-300">
-                Dashboard
-              </Link>
-            </li>
-            <li>
               <Link to="/measures" className="hover:text-gray-300">
                 Measures
               </Link>
@@ -27,11 +22,21 @@ export const Header: React.FC = () => {
               </Link>
             </li>
             {isAdmin && (
-              <li>
-                <Link to="/users" className="hover:text-gray-300">
-                  Users
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link
+                    to="/admin/advertisements"
+                    className="hover:text-gray-300"
+                  >
+                    Advertisements
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/admin/users" className="hover:text-gray-300">
+                    Users
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </nav>

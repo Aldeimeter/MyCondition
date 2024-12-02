@@ -2,6 +2,7 @@ import { fetchMethodsSearch } from "@/entities/method";
 import { api } from "@/shared/api";
 import {
   CreateMeasureForm,
+  ExportImport,
   LinearRegression,
   Pagination,
   RightSidebar,
@@ -168,7 +169,6 @@ export const Measures = () => {
     triggerRefresh();
     setResetSearch((prev) => !prev);
   };
-  //TEST: Do tests lol
   return (
     <div className="flex">
       <div className="flex flex-col w-full">
@@ -251,7 +251,7 @@ export const Measures = () => {
             </button>
             <button
               onClick={resetFilters}
-              className="p-1 bg-red-500 text-white rounded-full hover:bg-blue-600"
+              className="p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
             >
               Reset Filters
             </button>
@@ -266,6 +266,7 @@ export const Measures = () => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
+        <ExportImport endpoint="/measures" triggerRefresh={triggerRefresh} />
       </RightSidebar>
     </div>
   );

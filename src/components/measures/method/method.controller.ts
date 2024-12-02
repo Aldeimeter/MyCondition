@@ -29,7 +29,7 @@ export const remove = async (
     if (!methodToRemove) {
       throw new CustomError("Method not found", 404, "Method does not exist");
     }
-    methodToRemove.remove();
+    await methodToRemove.remove();
 
     res.status(200).json({ success: true });
   } catch (error) {

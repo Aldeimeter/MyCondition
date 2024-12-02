@@ -44,70 +44,157 @@ export const fetchAuthUserProfile = async (
   }
 };
 
-export const exportToCSV = async (
-  req: AuthRequest,
+export const createUser = async (
+  req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const userId = req.userId;
-
-    const user = await User.findOneBy({ id: userId });
-
-    if (!user) {
-      throw new CustomError(
-        "User not found",
-        404,
-        `User with id ${userId} not found`,
-      );
-    }
-    if (req.role !== ROLES.Admin) {
-      throw new CustomError("User is not an admin", 401);
-    }
-
-    const users = await User.findBy({ role: ROLES.User });
-
-    const csvHeader = "email,username,password,dateOfBirth\n";
-    const csvLines = [];
-    for (const user of users) {
-      csvLines.push(user.toCSV());
-    }
-    res.type("text/csv").send(csvHeader + csvLines.join("\n"));
+    const { username, email, password, age, height } = req.body;
+    const newUser = new User({
+      username,
+      email,
+      password,
+      age,
+      height,
+    });
+    await newUser.save();
+    res.status(201).json({ success: true });
   } catch (error) {
     next(error);
   }
 };
+
+export const removeUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const userToRemove = await User.findOneBy({
+      id,
+    });
+
+    if (!userToRemove) {
+      throw new CustomError("User not found", 404, "User does not exist");
+    }
+    await userToRemove.remove();
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPaginated = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
+    const skip = (page - 1) * limit;
+
+    const [users, total] = await Promise.all([
+      User.find({ skip, take: limit, where: { role: ROLES.User } }),
+      User.count(),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      users,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const exportToCSV = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const users = await User.findBy({ role: ROLES.User });
+
+    const csvHeader = "email,username,password,age,height\n";
+    const csvLines = [];
+    for (const user of users) {
+      csvLines.push(user.toCSV());
+    }
+
+    const csvData = csvHeader + csvLines.join("\n");
+    res.status(200).json({ success: true, csv: csvData });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const importFromCSV = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const userId = req.userId;
+    const csvData = req.body.csv;
 
-    const user = await User.findOneBy({ id: userId });
-
-    if (!user) {
-      throw new CustomError(
-        "User not found",
-        404,
-        `User with id ${userId} not found`,
-      );
-    }
-    if (req.role !== ROLES.Admin) {
-      throw new CustomError("User is not an admin", 401);
+    if (!csvData) {
+      res.status(400).json({ error: "CSV data is required." });
+      return; // Return to avoid further execution
     }
 
-    const csv = req.body.csv;
+    const users = [];
+    const errors = [];
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Process each line in the CSV
+    for (const [index, line] of csvData.split("\n").entries()) {
+      // Skip empty lines
+      if (!line.trim()) continue;
 
-    for (const line of csv.split("\n")) {
-      if (line === "email,username,password,dateOfBirth") {
+      const [email, username, password, age, height] = line.split(",");
+      if (!email || !emailRegex.test(email)) {
+        errors.push({ line: index + 1, error: "Invalid or missing email." });
         continue;
       }
-      const user = User.fromCSV(line);
-      await user.save();
+      const userWithEmail = await User.findOneBy({ email });
+      if (userWithEmail) {
+        errors.push({ line: index + 1, error: "Email is already taken." });
+        continue;
+      }
+      if (!username) {
+        errors.push({ line: index + 1, error: "Missing username." });
+        continue;
+      }
+      if (!password) {
+        errors.push({ line: index + 1, error: "Missing password." });
+        continue;
+      }
+      if (!age || isNaN(Number(age))) {
+        errors.push({ line: index + 1, error: "Invalid or missing age." });
+        continue;
+      }
+      if (!height || isNaN(Number(age))) {
+        errors.push({ line: index + 1, error: "Invalid or missing height." });
+        continue;
+      }
+      users.push(
+        new User({
+          email,
+          username,
+          password,
+          age: Number(age),
+          height: Number(height),
+        }),
+      );
     }
-    res.status(200).json({ success: true });
+
+    await Promise.all(users.map((user) => user.save()));
+    res
+      .status(200)
+      .json({ success: true, importedCount: users.length, errors });
   } catch (error) {
     next(error);
   }

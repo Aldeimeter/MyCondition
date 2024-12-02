@@ -1,5 +1,5 @@
 import React from "react";
-
+//TODO: add deletion hover and warning
 export interface TableData {
   id: string;
   [key: string]: React.ReactNode;

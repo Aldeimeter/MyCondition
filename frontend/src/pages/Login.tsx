@@ -39,7 +39,7 @@ export const Login: React.FC = () => {
       const response = await api.post("/users/login", formData);
       const { accessToken } = response.data as ResponseData;
       login(accessToken);
-      navigate("/dashboard");
+      navigate("/measures");
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         const error = e as AxiosError;

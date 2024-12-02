@@ -1,7 +1,7 @@
 const { body, param, query } = require("express-validator");
 import Method from "@/components/measures/method/method.model";
 
-export const createWeightValidator = [
+export const createValidator = [
   body("date")
     .exists({ checkFalsy: true })
     .withMessage("Date is required")
@@ -25,7 +25,7 @@ export const createWeightValidator = [
   }),
 ];
 
-export const removeWeightValidator = [
+export const removeValidator = [
   param("weightId")
     .notEmpty()
     .withMessage("Weight id is missing")

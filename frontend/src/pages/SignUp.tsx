@@ -152,7 +152,7 @@ export const SignUp: React.FC = () => {
               max: 220,
             }}
             label="Height"
-            error={errors.age}
+            error={errors.height}
           />
         </div>
         <button
