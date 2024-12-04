@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "@/shared/api";
 import type { ResponseData } from "@/shared/api";
 import type {
@@ -166,6 +166,12 @@ export const SignUp: React.FC = () => {
             {errors.global}
           </span>
         )}
+        <span className="mx-auto my-0.5 text-sm font-medium ">
+          Already have an account?{" "}
+          <Link to="/login" className="hover:text-gray-500">
+            Login
+          </Link>
+        </span>
       </form>
     </div>
   );

@@ -15,20 +15,20 @@ export const Pagination = ({
   onPageChange,
 }: PaginationProps) => {
   return (
-    <div className="flex items-center justify-center mt-4 space-x-2">
+    <div className="flex items-center justify-between gap-2">
       <button
         disabled={currentPage <= 5}
         onClick={() => onPageChange(currentPage - 5)}
-        className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        className="rounded-full p-2 hover:bg-gray-100 disabled:opacity-50 disabled:hover:bg-transparent"
       >
-        <ChevronsLeft />
+        <ChevronsLeft className="h-4 w-4" />
       </button>
       <button
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
-        className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        className="rounded-full p-2 hover:bg-gray-100 disabled:opacity-50 disabled:hover:bg-transparent"
       >
-        <ChevronLeft />
+        <ChevronLeft className="h-4 w-4" />
       </button>
       <span className="text-sm font-medium text-gray-700">
         {currentPage}/{totalPages}
@@ -36,16 +36,16 @@ export const Pagination = ({
       <button
         disabled={currentPage >= totalPages}
         onClick={() => onPageChange(currentPage + 1)}
-        className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        className="rounded-full p-2 hover:bg-gray-100 disabled:opacity-50 disabled:hover:bg-transparent"
       >
-        <ChevronRight />
+        <ChevronRight className="h-4 w-4" />
       </button>
       <button
-        disabled={currentPage <= totalPages + 5}
+        disabled={currentPage >= totalPages - 4}
         onClick={() => onPageChange(currentPage + 5)}
-        className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        className="rounded-full p-2 hover:bg-gray-100 disabled:opacity-50 disabled:hover:bg-transparent"
       >
-        <ChevronsRight />
+        <ChevronsRight className="h-4 w-4" />
       </button>
     </div>
   );

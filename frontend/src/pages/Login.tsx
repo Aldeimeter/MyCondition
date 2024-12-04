@@ -7,6 +7,7 @@ import { ErrorResponse, Errors, ValidationErrorResponse } from "@/shared/utils";
 import { AxiosError } from "axios";
 import { mapValidationErrors } from "@/shared/utils";
 import { ValidatedInput } from "@/widgets";
+import { Link } from "react-router-dom";
 
 interface LoginForm {
   email: string;
@@ -106,6 +107,12 @@ export const Login: React.FC = () => {
             {errors.global}
           </span>
         )}
+        <span className="mx-auto my-0.5 text-sm font-medium">
+          Don't have account yet?
+          <Link to="/signup" className="hover:text-gray-500">
+            Create One
+          </Link>
+        </span>
       </form>
     </div>
   );

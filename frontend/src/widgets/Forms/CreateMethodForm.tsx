@@ -66,7 +66,7 @@ export const CreateMethodForm = ({ triggerRefresh }: FormProps) => {
     }
   };
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit}>
+    <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
       <ValidatedInput
         inputProps={{
           type: "text",
@@ -75,39 +75,40 @@ export const CreateMethodForm = ({ triggerRefresh }: FormProps) => {
           value: formData.name,
           onChange: handleChange,
           placeholder: "Method name",
+          className: "w-full",
         }}
         label="Name"
         error={errors.name}
       />
-      <div className="mb-2 flex flex-col w-full">
+      <div className="flex flex-col">
         <label
           htmlFor="description"
-          className="ms-1 mb-1 text-sm font-medium text-gray-900"
+          className="mb-2 text-sm font-medium text-gray-900"
         >
           Description
         </label>
         <textarea
           id="description"
           name="description"
-          className="bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-52 p-2.5 text-sm text-gray-900 resize-none"
+          className="min-h-[200px] w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500"
           maxLength={1024}
           onChange={handleChange}
           value={formData.description}
         />
         {errors.description && (
-          <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">
+          <span className="mt-1 text-sm font-medium text-red-500">
             {errors.description}
           </span>
         )}
       </div>
       <button
         type="submit"
-        className="w-3/4 mt-2 mx-auto focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 mb-2"
+        className="w-full rounded-full bg-purple-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300"
       >
         Create
       </button>
       {errors.global && (
-        <span className="ms-1 mt-0.5 text-sm font-medium text-red-500">
+        <span className="text-sm font-medium text-red-500">
           {errors.global}
         </span>
       )}

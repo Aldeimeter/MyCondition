@@ -12,15 +12,11 @@ import { SearchWithSuggestions, ValidatedInput } from "..";
 interface MeasureForm {
   date: string;
   value: string;
-  methodId: string;
+  methodId: string | undefined;
 }
 interface FormProps {
   triggerRefresh: () => void;
   measureType: string;
-}
-interface Method {
-  id: string;
-  name: string;
 }
 export const CreateMeasureForm = ({
   triggerRefresh,
@@ -54,6 +50,12 @@ export const CreateMeasureForm = ({
     e.preventDefault();
     setErrors({});
     try {
+      if (formData.methodId === "" || formData.methodId === "null") {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          methodId: undefined,
+        }));
+      }
       const response = await api.post(`/${measureType}`, formData);
       if (response.data.success) {
         setFormData({

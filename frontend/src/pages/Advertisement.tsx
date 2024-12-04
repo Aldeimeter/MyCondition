@@ -77,12 +77,17 @@ export const Advertisement = () => {
   // TODO: add onClick deletion
   // TODO: add useEffect to fetch methods
   return (
-    <div className="flex">
-      <Table
-        data={ads as unknown as TableData[]}
-        columns={tableColumns}
-        onClickAction={setActive}
-      />
+    <div className="flex gap-8 p-8 max-w-7xl mx-auto">
+      <div className="flex-1">
+        <h2 className="text-2xl font-light mb-6">
+          Click on row to activate ad
+        </h2>
+        <Table
+          data={ads as unknown as TableData[]}
+          columns={tableColumns}
+          onClickAction={setActive}
+        />
+      </div>
       <RightSidebar>
         <Pagination
           currentPage={currentPage}

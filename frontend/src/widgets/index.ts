@@ -15,3 +15,5 @@ export type { Suggestion } from "./SearchWithSuggestions/SearchWithSuggestions";
 export { LinearRegression } from "./LinearRegression/LinearRegression";
 export { ExportImport } from "./ExportImport/ExportImport";
 export { Advertisement } from "./Advertisement/Advertisement";
+export { MeasureTypes } from "./MeasureTypes/MeasureTypes";
+export type { MeasureType } from "./MeasureTypes/MeasureTypes";

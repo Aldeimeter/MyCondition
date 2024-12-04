@@ -6,9 +6,11 @@ import { LogoutBtn } from "../LogoutBtn/LogoutBtn";
 export const Header: React.FC = () => {
   const { user } = useAuth();
   const isAdmin = user.role === "admin";
+
   return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="bg-gray-800 text-white fixed top-0 left-0 right-0 z-50 shadow-md">
+      <div className="container mx-auto flex justify-between items-center p-4">
+        {/* Navigation */}
         <nav>
           <ul className="flex space-x-4">
             <li>
@@ -40,8 +42,10 @@ export const Header: React.FC = () => {
             )}
           </ul>
         </nav>
+
+        {/* User Actions */}
         <div className="flex items-center space-x-4">
-          <span>{user.username}</span>
+          <span className="font-semibold">{user.username}</span>
           <LogoutBtn />
         </div>
       </div>

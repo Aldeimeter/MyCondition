@@ -4,6 +4,8 @@ import {
   CreateMeasureForm,
   ExportImport,
   LinearRegression,
+  MeasureTypes,
+  MeasureType,
   Pagination,
   RightSidebar,
   SearchWithSuggestions,
@@ -13,8 +15,6 @@ import {
 } from "@/widgets";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
-
-type MeasuresType = "weight" | "upper" | "lower";
 
 interface Measure extends TableData {
   date: string;
@@ -37,7 +37,7 @@ export const Measures = () => {
 
   const [resetSearch, setResetSearch] = useState(false);
   const [measures, setMeasures] = useState<Measure[]>([]);
-  const [measureType, setMeasureType] = useState<MeasuresType>("weight");
+  const [measureType, setMeasureType] = useState<MeasureType>("weight");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [refresh, setRefresh] = useState(false);
@@ -170,40 +170,15 @@ export const Measures = () => {
     setResetSearch((prev) => !prev);
   };
   return (
-    <div className="flex">
-      <div className="flex flex-col w-full">
-        <div className="mx-10 flex justify-between">
-          <button
-            onClick={() => setMeasureType("weight")}
-            className={`px-4 py-2 ${
-              measureType === "weight"
-                ? "text-blue-500"
-                : "text-gray-500 hover:text-blue-500"
-            }`}
-          >
-            Weight
-          </button>
-          <button
-            onClick={() => setMeasureType("upper")}
-            className={`px-4 py-2 ${
-              measureType === "upper"
-                ? "text-blue-500"
-                : "text-gray-500 hover:text-blue-500"
-            }`}
-          >
-            Upper
-          </button>
-          <button
-            onClick={() => setMeasureType("lower")}
-            className={`px-4 py-2 ${
-              measureType === "lower"
-                ? "text-blue-500"
-                : "text-gray-500 hover:text-blue-500"
-            }`}
-          >
-            Lower
-          </button>
-        </div>
+    <div className="flex gap-8 p-8 max-w-7xl mx-auto">
+      <div className="flex-1">
+        <MeasureTypes
+          measureType={measureType}
+          setMeasureType={setMeasureType}
+        />
+        <h2 className="text-2xl font-light mb-6">
+          Click on row to delete measure
+        </h2>
         <Table
           data={measures}
           columns={tableColumns}
@@ -243,18 +218,20 @@ export const Measures = () => {
               searchName="Method"
               reset={resetSearch}
             />
-            <button
-              onClick={applyFilters}
-              className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
-            >
-              Apply Filters
-            </button>
-            <button
-              onClick={resetFilters}
-              className="p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-            >
-              Reset Filters
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={applyFilters}
+                className="p-2 w-full bg-purple-700 text-white rounded-full hover:bg-purple-800"
+              >
+                Apply Filters
+              </button>
+              <button
+                onClick={resetFilters}
+                className="px-3 bg-red-500 text-white rounded-full hover:bg-red-600"
+              >
+                X
+              </button>
+            </div>
           </div>
         </div>
         <CreateMeasureForm

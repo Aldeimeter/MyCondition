@@ -68,12 +68,17 @@ export const Users = () => {
   }, [currentPage, refresh]);
 
   return (
-    <div className="flex">
-      <Table
-        data={users as unknown as TableData[]}
-        columns={tableColumns}
-        onClickAction={deleteUser}
-      />
+    <div className="flex gap-8 p-8 max-w-7xl mx-auto">
+      <div className="flex-1">
+        <h2 className="text-2xl font-light mb-6">
+          Click on row to delete user
+        </h2>
+        <Table
+          data={users as unknown as TableData[]}
+          columns={tableColumns}
+          onClickAction={deleteUser}
+        />
+      </div>
       <RightSidebar>
         <Pagination
           currentPage={currentPage}

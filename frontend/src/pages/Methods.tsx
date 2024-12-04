@@ -70,19 +70,26 @@ export const Methods = () => {
   // TODO: add onClick deletion
   // TODO: add useEffect to fetch methods
   return (
-    <div className="flex">
-      <Table
-        data={methods}
-        columns={tableColumns}
-        onClickAction={deleteMethod}
-      />
-      <RightSidebar>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
+    <div className="flex gap-8 p-8 max-w-7xl mx-auto">
+      <div className="flex-1">
+        <h2 className="text-2xl font-light mb-6">
+          Click on row to delete method
+        </h2>
+        <Table
+          data={methods}
+          columns={tableColumns}
+          onClickAction={deleteMethod}
         />
-        <CreateMethodForm triggerRefresh={triggerRefresh} />
+      </div>
+      <RightSidebar>
+        <div className="w-[300px] space-y-6">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+          <CreateMethodForm triggerRefresh={triggerRefresh} />
+        </div>
       </RightSidebar>
     </div>
   );
