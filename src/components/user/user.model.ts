@@ -29,10 +29,11 @@ export default class User extends BaseEntity {
   @Column({ length: 60, type: "varchar" })
   password!: string;
 
+  private skipHashing: boolean = false;
   // Hook to hash password before saving or updating
   @BeforeInsert()
   async hashPassword() {
-    if (this.password) {
+    if (this.password && !this.skipHashing) {
       const salt = await bcrypt.genSalt(10);
       this.password = await bcrypt.hash(this.password, salt);
     }
@@ -57,10 +58,13 @@ export default class User extends BaseEntity {
   @OneToMany(() => Weight, (weight) => weight.user, { cascade: true })
   weights!: Weight[];
 
-  constructor(init?: Partial<User>) {
+  constructor(init?: Partial<User>, skipHashing?: boolean) {
     super();
     if (init) {
       Object.assign(this, init);
+    }
+    if (skipHashing) {
+      this.skipHashing = true;
     }
   }
 
@@ -84,7 +88,6 @@ export default class User extends BaseEntity {
       height: Number(height),
     });
   }
-
   static async findByCredentials(email: string, password: string) {
     const user = await this.findOne({
       where: {

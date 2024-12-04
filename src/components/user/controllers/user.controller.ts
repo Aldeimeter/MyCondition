@@ -181,13 +181,16 @@ export const importFromCSV = async (
         continue;
       }
       users.push(
-        new User({
-          email,
-          username,
-          password,
-          age: Number(age),
-          height: Number(height),
-        }),
+        new User(
+          {
+            email,
+            username,
+            password,
+            age: Number(age),
+            height: Number(height),
+          },
+          true,
+        ),
       );
     }
 

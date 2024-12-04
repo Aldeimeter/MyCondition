@@ -171,12 +171,12 @@ export const Measures = () => {
   };
   return (
     <div className="flex gap-8 p-8 max-w-7xl mx-auto">
-      <div className="flex-1">
+      <div className="flex-1 shadow-sm border rounded-lg">
         <MeasureTypes
           measureType={measureType}
           setMeasureType={setMeasureType}
         />
-        <h2 className="text-2xl font-light mb-6">
+        <h2 className="pt-3 text-center text-2xl font-light mb-6">
           Click on row to delete measure
         </h2>
         <Table

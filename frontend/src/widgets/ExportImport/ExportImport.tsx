@@ -76,13 +76,13 @@ export const ExportImport = ({ endpoint, triggerRefresh }: Props) => {
       />
       <button
         onClick={handleExportMeasures}
-        className="p-1 bg-gray-500 text-white rounded-full hover:bg-blue-600"
+        className="p-1 bg-gray-400 text-white rounded-full hover:bg-gray-500"
       >
         Export measures
       </button>
       <button
         onClick={() => fileSelectorRef.current?.click()}
-        className="p-1 bg-gray-500 text-white rounded-full hover:bg-blue-600"
+        className="p-1 bg-gray-400 text-white rounded-full hover:bg-gray-500"
       >
         Import measures
       </button>

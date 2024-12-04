@@ -4,7 +4,7 @@ interface SidebarProps extends React.PropsWithChildren {}
 
 export const RightSidebar = ({ children }: SidebarProps) => {
   return (
-    <div className="p-4 h-full border-l border-gray-200 bg-white shadow-lg">
+    <div className="p-4 rounded-lg min-h-full border border-gray-200 bg-white shadow-sm">
       {children}
     </div>
   );

@@ -71,8 +71,8 @@ export const Methods = () => {
   // TODO: add useEffect to fetch methods
   return (
     <div className="flex gap-8 p-8 max-w-7xl mx-auto">
-      <div className="flex-1">
-        <h2 className="text-2xl font-light mb-6">
+      <div className="flex-1 shadow-sm border rounded-lg">
+        <h2 className="pt-3 text-center text-2xl font-light mb-6">
           Click on row to delete method
         </h2>
         <Table
